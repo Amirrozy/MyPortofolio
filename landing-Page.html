@@ -1,0 +1,883 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Amir Gourmet - Kelezatan Culinary Premium</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=Playfair+Display:ital,wght@0,600;0,700;0,800;1,600&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        cream: {
+                            50: '#FDFBF7',
+                            100: '#F7F3EB',
+                            200: '#EFE8D9',
+                        },
+                        terracotta: {
+                            500: '#E05A47',
+                            600: '#C84533',
+                            700: '#A63323',
+                        },
+                        espresso: {
+                            800: '#3D271D',
+                            900: '#2A1A14',
+                            950: '#1A0E0A',
+                        },
+                        sage: {
+                            500: '#5B8C67',
+                        },
+                        gold: {
+                            500: '#D99B26',
+                            600: '#B87F17',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Plus Jakarta Sans', 'sans-serif'],
+                        serif: ['Playfair Display', 'serif']
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        .glass-nav {
+            background: rgba(253, 251, 247, 0.92);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+        }
+
+        /* Hero Floating Animation */
+        @keyframes floatSlow {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(1.5deg); }
+        }
+        .animate-float {
+            animation: floatSlow 5s ease-in-out infinite;
+        }
+
+        /* Enhanced 3D Tilt Card Base Container */
+        .product-card-3d {
+            transform-style: preserve-3d;
+            perspective: 1000px;
+            transition: transform 0.15s ease-out, box-shadow 0.3s ease;
+            will-change: transform;
+        }
+
+        /* Inner layers with depth */
+        .card-img-layer {
+            transform: translateZ(35px);
+            transition: transform 0.2s ease-out;
+        }
+
+        .card-badge-layer {
+            transform: translateZ(55px);
+        }
+
+        .card-content-layer {
+            transform: translateZ(25px);
+        }
+
+        /* Glare Effect Overlay */
+        .glare-effect {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 1.5rem;
+            background: linear-gradient(135deg, rgba(255,255,255,0.6) 0%, rgba(255,255,255,0) 60%);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease;
+            z-index: 10;
+        }
+        .product-card-3d:hover .glare-effect {
+            opacity: 1;
+        }
+
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #F7F3EB;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #E05A47;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body class="bg-cream-50 text-espresso-900 font-sans antialiased selection:bg-terracotta-500 selection:text-white">
+
+    <!-- NAVIGATION HEADER -->
+    <header class="fixed top-0 left-0 right-0 z-50 glass-nav border-b border-cream-200/80 transition-all duration-300">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            
+            <!-- Logo -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-11 h-11 rounded-2xl bg-gradient-to-tr from-terracotta-600 to-gold-500 flex items-center justify-center text-white shadow-md shadow-terracotta-500/20 group-hover:scale-105 transition-transform">
+                    <i data-lucide="utensils-crossed" class="w-6 h-6"></i>
+                </div>
+                <div>
+                    <span class="font-serif text-2xl font-bold tracking-tight text-espresso-950 block leading-none">Amirz</span>
+                    <span class="text-[10px] font-bold tracking-widest text-terracotta-600 uppercase">Gourmet Experience</span>
+                </div>
+            </a>
+
+            <!-- Desktop Nav Links -->
+            <nav class="hidden md:flex items-center gap-8 font-semibold text-espresso-800 text-sm">
+                <a href="#hero" class="hover:text-terracotta-600 transition-colors">Beranda</a>
+                <a href="#menu" class="hover:text-terracotta-600 transition-colors">Menu Favorit</a>
+                <a href="#special" class="hover:text-terracotta-600 transition-colors">Penawaran Spesial</a>
+                <a href="#about" class="hover:text-terracotta-600 transition-colors">Tentang Kami</a>
+                <a href="#reviews" class="hover:text-terracotta-600 transition-colors">Ulasan</a>
+            </nav>
+
+            <!-- Actions Header -->
+            <div class="flex items-center gap-4">
+                <!-- Cart Button -->
+                <button id="openCartBtn" class="relative p-3 rounded-2xl bg-cream-100 hover:bg-cream-200 text-espresso-900 transition-all border border-cream-200 flex items-center gap-2 group">
+                    <i data-lucide="shopping-bag" class="w-5 h-5 text-terracotta-600 group-hover:scale-110 transition-transform"></i>
+                    <span class="hidden sm:inline font-bold text-xs">Keranjang</span>
+                    <span id="cartCountBadge" class="bg-terracotta-600 text-white text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-white hidden">0</span>
+                </button>
+
+                <!-- CTA Button -->
+                <a href="#menu" class="hidden sm:inline-flex items-center gap-2 bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold px-5 py-2.5 rounded-2xl shadow-lg shadow-terracotta-500/25 transition-all hover:shadow-terracotta-500/40 hover:-translate-y-0.5 text-sm">
+                    <span>Pesan Sekarang</span>
+                    <i data-lucide="arrow-right" class="w-4 h-4"></i>
+                </a>
+
+                <!-- Mobile Menu Toggle -->
+                <button id="mobileMenuBtn" class="md:hidden p-2 text-espresso-900">
+                    <i data-lucide="menu" class="w-6 h-6"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobile Menu Dropdown -->
+        <div id="mobileMenu" class="hidden md:hidden bg-cream-50 border-b border-cream-200 px-4 pt-2 pb-6 space-y-3">
+            <a href="#hero" class="block py-2 text-espresso-900 font-semibold hover:text-terracotta-600">Beranda</a>
+            <a href="#menu" class="block py-2 text-espresso-900 font-semibold hover:text-terracotta-600">Menu Utama</a>
+            <a href="#special" class="block py-2 text-espresso-900 font-semibold hover:text-terracotta-600">Spesial Hari Ini</a>
+            <a href="#about" class="block py-2 text-espresso-900 font-semibold hover:text-terracotta-600">Tentang Kami</a>
+            <a href="#reviews" class="block py-2 text-espresso-900 font-semibold hover:text-terracotta-600">Ulasan</a>
+        </div>
+    </header>
+
+    <!-- HERO SECTION -->
+    <section id="hero" class="relative pt-32 pb-20 md:pt-40 md:pb-28 overflow-hidden bg-gradient-to-b from-cream-100/70 via-cream-50 to-cream-50">
+        <!-- Ambient Warm Lighting -->
+        <div class="absolute top-10 left-1/4 w-96 h-96 bg-terracotta-500/10 rounded-full filter blur-[100px] pointer-events-none"></div>
+        <div class="absolute top-20 right-10 w-96 h-96 bg-gold-500/15 rounded-full filter blur-[100px] pointer-events-none"></div>
+
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+            <div class="grid lg:grid-cols-2 gap-12 lg:gap-8 items-center">
+                
+                <!-- Left Column Text -->
+                <div class="space-y-6 text-center lg:text-left">
+                    <div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-cream-200/70 border border-cream-300 text-terracotta-700 text-xs font-bold tracking-wider uppercase">
+                        <i data-lucide="sparkles" class="w-4 h-4 text-gold-600"></i>
+                        <span>Pengalaman Kuliner Bintang Lima</span>
+                    </div>
+
+                    <h1 class="font-serif text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight text-espresso-950">
+                        Kemewahan Rasa <br class="hidden sm:inline">
+                        <span class="text-terracotta-600 italic">Sajian Gourmet</span> 
+                        Di Setiap Gigitan
+                    </h1>
+
+                    <p class="text-espresso-800/80 text-base sm:text-lg max-w-xl mx-auto lg:mx-0 font-medium leading-relaxed">
+                        Diracik khusus oleh chef berpengalaman menggunakan 100% bahan organik impor bermutu tinggi. Dikirim hangat langsung ke tempat Anda.
+                    </p>
+
+                    <div class="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4 pt-4">
+                        <a href="#menu" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold text-center transition-all shadow-xl shadow-terracotta-500/30 hover:scale-105 flex items-center justify-center gap-2">
+                            <span>Jelajahi Menu</span>
+                            <i data-lucide="utensils" class="w-5 h-5"></i>
+                        </a>
+                        <a href="#special" class="w-full sm:w-auto px-8 py-4 rounded-2xl bg-white border-2 border-cream-200 hover:border-terracotta-500 text-espresso-900 font-bold text-center transition-all shadow-sm hover:shadow-md flex items-center justify-center gap-2">
+                            <i data-lucide="flame" class="w-5 h-5 text-terracotta-500"></i>
+                            <span>Diskon Hari Ini</span>
+                        </a>
+                    </div>
+
+                    <!-- Trust Badges -->
+                    <div class="pt-8 grid grid-cols-3 gap-4 border-t border-cream-200 max-w-md mx-auto lg:mx-0">
+                        <div>
+                            <span class="block font-serif text-2xl lg:text-3xl font-extrabold text-espresso-950">4.9 / 5</span>
+                            <span class="text-xs font-semibold text-espresso-800/70">1.500+ Ulasan Puas</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl lg:text-3xl font-extrabold text-espresso-950">100%</span>
+                            <span class="text-xs font-semibold text-espresso-800/70">Bahan Organik</span>
+                        </div>
+                        <div>
+                            <span class="block font-serif text-2xl lg:text-3xl font-extrabold text-espresso-950">30 Mnt</span>
+                            <span class="text-xs font-semibold text-espresso-800/70">Garansi Hangat</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Right Column Interactive Floating Image -->
+                <div class="relative flex justify-center items-center">
+                    <div class="relative w-72 sm:w-96 lg:w-[460px] aspect-square">
+                        <!-- Subtle Glow -->
+                        <div class="absolute inset-0 rounded-full bg-gradient-to-tr from-terracotta-500/20 to-gold-500/20 blur-2xl"></div>
+                        
+                        <!-- Main Hero Image -->
+                        <div class="relative w-full h-full rounded-3xl overflow-hidden shadow-2xl border-4 border-white animate-float group">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=1000&q=80" 
+                                 onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=1000&q=80';"
+                                 alt="Gourmet Wagyu Burger" 
+                                 class="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-700">
+                            
+                            <!-- Product Tag Overlay -->
+                            <div class="absolute bottom-5 left-5 right-5 p-4 rounded-2xl bg-white/95 backdrop-blur-md border border-cream-200 shadow-lg text-espresso-950">
+                                <div class="flex justify-between items-center">
+                                    <div>
+                                        <span class="text-[10px] font-extrabold uppercase tracking-wider text-terracotta-600 block">Chef Signature</span>
+                                        <h3 class="font-serif font-bold text-lg">Supreme Wagyu Truffle Burger</h3>
+                                    </div>
+                                    <span class="text-terracotta-600 font-extrabold text-xl">Rp 145.000</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Floating Badge -->
+                        <div class="absolute -top-4 -left-4 bg-white border border-cream-200 text-espresso-950 p-4 rounded-2xl shadow-xl hidden sm:flex items-center gap-3">
+                            <div class="p-2.5 rounded-xl bg-gold-500/15 text-gold-600">
+                                <i data-lucide="award" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-espresso-800/60">Terfavorit 2026</p>
+                                <p class="text-sm font-extrabold text-espresso-950">Terjual 12.500+</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </section>
+
+    <!-- MENU SECTION WITH IMPROVED 3D HOVER CARDS -->
+    <section id="menu" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        
+        <!-- Section Header -->
+        <div class="text-center max-w-3xl mx-auto mb-14 space-y-3">
+            <span class="text-terracotta-600 font-bold text-xs uppercase tracking-widest bg-terracotta-500/10 px-3 py-1 rounded-full">Menu Pilihan</span>
+            <h2 class="font-serif text-3xl sm:text-4xl lg:text-5xl font-bold text-espresso-950">
+                Hidangan Mahakarya Kami
+            </h2>
+            <p class="text-espresso-800/80 text-base">
+                Sorot dan geser kursor di atas kartu makanan untuk melihat efek penggerak 3D interaktif.
+            </p>
+
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-3 pt-6" id="categoryFilters">
+                <button data-category="all" class="filter-btn active px-6 py-2.5 rounded-2xl text-sm font-bold transition-all bg-espresso-950 text-white shadow-md">
+                    Semua Menu
+                </button>
+                <button data-category="main" class="filter-btn px-6 py-2.5 rounded-2xl text-sm font-bold transition-all bg-cream-100 text-espresso-800 hover:bg-cream-200 border border-cream-200">
+                    Makanan Utama
+                </button>
+                <button data-category="dessert" class="filter-btn px-6 py-2.5 rounded-2xl text-sm font-bold transition-all bg-cream-100 text-espresso-800 hover:bg-cream-200 border border-cream-200">
+                    Dessert & Manis
+                </button>
+                <button data-category="beverage" class="filter-btn px-6 py-2.5 rounded-2xl text-sm font-bold transition-all bg-cream-100 text-espresso-800 hover:bg-cream-200 border border-cream-200">
+                    Minuman Segar
+                </button>
+            </div>
+        </div>
+
+        <!-- Product Grid -->
+        <div id="productGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Dynamically Rendered via JS -->
+        </div>
+    </section>
+
+    <!-- SPECIAL OFFER BANNER -->
+    <section id="special" class="py-16 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 my-8">
+        <div class="bg-gradient-to-r from-espresso-950 via-espresso-900 to-espresso-950 rounded-3xl p-8 sm:p-12 text-white shadow-2xl relative overflow-hidden border border-espresso-800 flex flex-col md:flex-row items-center justify-between gap-8">
+            <div class="space-y-4 max-w-xl z-10">
+                <span class="inline-block px-3.5 py-1 bg-terracotta-500 text-white text-xs font-extrabold rounded-lg uppercase tracking-wider">
+                    Promo Khusus Minggu Ini
+                </span>
+                <h3 class="font-serif text-3xl sm:text-4xl font-bold leading-tight">Dapatkan Potongan Harga 30% Untuk Pesanan Pertama</h3>
+                <p class="text-cream-200 text-sm leading-relaxed">Gunakan kode voucher saat checkout: <span class="text-gold-500 font-mono font-bold bg-espresso-800 px-2.5 py-1 rounded-md border border-espresso-700">AMIR30</span></p>
+            </div>
+            <div class="z-10 flex-shrink-0">
+                <a href="#menu" class="px-8 py-4 bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold rounded-2xl shadow-xl transition-all transform hover:scale-105 inline-flex items-center gap-2">
+                    <span>Gunakan Promo</span>
+                    <i data-lucide="tag" class="w-5 h-5"></i>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ABOUT SECTION -->
+    <section id="about" class="py-20 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid lg:grid-cols-2 gap-12 items-center">
+            <div class="relative">
+                <div class="relative rounded-3xl overflow-hidden shadow-xl border-4 border-white">
+                    <img src="https://asset.kompas.com/crops/Ub7izqtMSQvDHtBwlEhNTgmCRNE=/0x0:3500x2333/1200x800/data/photo/2019/11/26/5ddce810e74fb.jpg" 
+                         onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=800&q=80';"
+                         alt="Chef Preparing Food" class="w-full h-[420px] object-cover">
+                </div>
+                <div class="absolute -bottom-6 -right-6 bg-white p-5 rounded-2xl shadow-xl border border-cream-200 hidden sm:block max-w-xs">
+                    <div class="flex items-center gap-4">
+                        <div class="p-3 bg-terracotta-50 text-terracotta-600 rounded-xl">
+                            <i data-lucide="chef-hat" class="w-7 h-7"></i>
+                        </div>
+                        <div>
+                            <h4 class="font-bold text-espresso-950 text-base">Executive Chef</h4>
+                            <p class="text-xs text-espresso-800/70">15+ Tahun pengalaman di restoran bintang internasional.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="space-y-6">
+                <span class="text-terracotta-600 font-bold text-xs uppercase tracking-widest bg-terracotta-500/10 px-3 py-1 rounded-full">Kualitas Terjamin</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-espresso-950">
+                    Komitmen Kami Terhadap Standar Citarasa Tinggi
+                </h2>
+                <p class="text-espresso-800/80 leading-relaxed text-sm sm:text-base">
+                    Kami percaya bahwa makanan lezat berawal dari bahan makanan bermutu. Amirz Gourmet menghadirkan kombinasi seni memasak modern dan kesegaran bahan organik harian.
+                </p>
+                <div class="grid grid-cols-2 gap-4 pt-2">
+                    <div class="flex items-start gap-3 bg-cream-100/80 p-4 rounded-2xl border border-cream-200">
+                        <div class="p-2 rounded-lg bg-terracotta-500 text-white">
+                            <i data-lucide="leaf" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm text-espresso-950">100% Organik</h5>
+                            <p class="text-xs text-espresso-800/70">Bebas dari bahan pengawet.</p>
+                        </div>
+                    </div>
+                    <div class="flex items-start gap-3 bg-cream-100/80 p-4 rounded-2xl border border-cream-200">
+                        <div class="p-2 rounded-lg bg-terracotta-500 text-white">
+                            <i data-lucide="truck" class="w-5 h-5"></i>
+                        </div>
+                        <div>
+                            <h5 class="font-bold text-sm text-espresso-950">Pengiriman Hangat</h5>
+                            <p class="text-xs text-espresso-800/70">Kotak termal khusus.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- REVIEWS SECTION -->
+    <section id="reviews" class="py-20 bg-cream-100/60 border-y border-cream-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center max-w-2xl mx-auto mb-14 space-y-2">
+                <span class="text-terracotta-600 font-bold text-xs uppercase tracking-widest">Ulasan Pelanggan</span>
+                <h2 class="font-serif text-3xl sm:text-4xl font-bold text-espresso-950">Pengalaman Mereka</h2>
+            </div>
+
+            <div class="grid md:grid-cols-3 gap-8">
+                <!-- Testimonial 1 -->
+                <div class="bg-white p-7 rounded-3xl shadow-sm border border-cream-200 space-y-4">
+                    <div class="flex text-gold-500 gap-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                    </div>
+                    <p class="text-espresso-800/80 text-sm leading-relaxed italic">"Burger Wagyu Truffle-nya luar biasa enak! Daging sangat juicy dan aromanya sangat menggugah selera."</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-cream-100">
+                        <img src="https://images.unsplash.com/photo-1544005313-94ddf0286df2?auto=format&fit=crop&w=200&q=80" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1494790108377-be9c29b29330?auto=format&fit=crop&w=200&q=80';"
+                             alt="Clarissa" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h5 class="font-bold text-sm text-espresso-950">Anonim</h5>
+                            <span class="text-xs text-espresso-800/60">Food Reviewer</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="bg-white p-7 rounded-3xl shadow-sm border border-cream-200 space-y-4">
+                    <div class="flex text-gold-500 gap-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                    </div>
+                    <p class="text-espresso-800/80 text-sm leading-relaxed italic">"Pasta Truffle dan Matcha Dessert-nya paduan pas. Makanan sampai dalam keadaan hangat!"</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-cream-100">
+                        <img src="https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?auto=format&fit=crop&w=200&q=80" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=200&q=80';"
+                             alt="Reza" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h5 class="font-bold text-sm text-espresso-950">Anonim</h5>
+                            <span class="text-xs text-espresso-800/60">Pelanggan Setia</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="bg-white p-7 rounded-3xl shadow-sm border border-cream-200 space-y-4">
+                    <div class="flex text-gold-500 gap-1">
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                        <i data-lucide="star" class="w-4 h-4 fill-gold-500"></i>
+                    </div>
+                    <p class="text-espresso-800/80 text-sm leading-relaxed italic">"Pelayanan cepat, kemasan rapi dan eksklusif. Kualitas rasa betul-betul sekelas restoran berbintang."</p>
+                    <div class="flex items-center gap-3 pt-2 border-t border-cream-100">
+                        <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=200&q=80" 
+                             onerror="this.onerror=null;this.src='https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=200&q=80';"
+                             alt="Amanda" class="w-10 h-10 rounded-full object-cover">
+                        <div>
+                            <h5 class="font-bold text-sm text-espresso-950">Anonim</h5>
+                            <span class="text-xs text-espresso-800/60">Culinary Blogger</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer class="bg-espresso-950 text-cream-200 pt-16 pb-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-10 pb-12 border-b border-espresso-800">
+                <div class="space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-9 h-9 rounded-xl bg-terracotta-500 flex items-center justify-center text-white">
+                            <i data-lucide="utensils-crossed" class="w-5 h-5"></i>
+                        </div>
+                        <span class="font-serif text-2xl font-bold text-white">Amirz</span>
+                    </div>
+                    <p class="text-xs text-cream-200/70 leading-relaxed">
+                        Destinasi hidangan makanan gourmet bermutu tinggi dengan kenyamanan pengantaran langsung ke pintu Anda.
+                    </p>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Navigasi</h4>
+                    <ul class="space-y-2 text-xs">
+                        <li><a href="#hero" class="hover:text-terracotta-500 transition-colors">Beranda</a></li>
+                        <li><a href="#menu" class="hover:text-terracotta-500 transition-colors">Menu Pilihan</a></li>
+                        <li><a href="#special" class="hover:text-terracotta-500 transition-colors">Penawaran Spesial</a></li>
+                        <li><a href="#about" class="hover:text-terracotta-500 transition-colors">Tentang Kami</a></li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Kontak Kami</h4>
+                    <ul class="space-y-2.5 text-xs">
+                        <li class="flex items-center gap-2.5"><i data-lucide="map-pin" class="w-4 h-4 text-terracotta-500"></i> Senopati No. 45, Tangerang</li>
+                        <li class="flex items-center gap-2.5"><i data-lucide="phone" class="w-4 h-4 text-terracotta-500"></i> +62 812-3456-7890</li>
+                        <li class="flex items-center gap-2.5"><i data-lucide="mail" class="w-4 h-4 text-terracotta-500"></i> order@amirz.co.id</li>
+                    </ul>
+                </div>
+
+                <div>
+                    <h4 class="text-white text-sm font-bold mb-4">Berlangganan Promo</h4>
+                    <form onsubmit="event.preventDefault(); showToast('Terima kasih telah mendaftar!');" class="flex gap-2">
+                        <input type="email" placeholder="Email Anda..." required class="bg-espresso-900 border border-espresso-800 text-xs text-white px-3 py-2.5 rounded-xl focus:outline-none focus:border-terracotta-500 w-full">
+                        <button type="submit" class="bg-terracotta-500 text-white font-bold px-4 py-2.5 rounded-xl text-xs hover:bg-terracotta-600 transition-colors">
+                            Kirim
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="pt-8 text-center text-xs text-cream-200/50">
+                &copy; 2026 Amirz Gourmet. Seluruh hak cipta dilindungi undang-undang.
+            </div>
+        </div>
+    </footer>
+
+    <!-- INTERACTIVE SHOPPING CART SIDEBAR -->
+    <div id="cartOverlay" class="fixed inset-0 bg-espresso-950/60 backdrop-blur-sm z-50 opacity-0 pointer-events-none transition-opacity duration-300"></div>
+    
+    <div id="cartSidebar" class="fixed top-0 right-0 h-full w-full sm:w-[420px] bg-white text-espresso-950 z-50 transform translate-x-full transition-transform duration-300 ease-in-out shadow-2xl flex flex-col">
+        <!-- Cart Header -->
+        <div class="p-6 border-b border-cream-200 flex items-center justify-between bg-cream-50">
+            <div class="flex items-center gap-3">
+                <i data-lucide="shopping-bag" class="w-6 h-6 text-terracotta-600"></i>
+                <h3 class="font-serif text-xl font-bold">Keranjang Belanja</h3>
+            </div>
+            <button id="closeCartBtn" class="p-2 rounded-full hover:bg-cream-200 text-espresso-800 transition-colors">
+                <i data-lucide="x" class="w-5 h-5"></i>
+            </button>
+        </div>
+
+        <!-- Cart Items List -->
+        <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-6 space-y-4">
+            <!-- Dynamic Content -->
+        </div>
+
+        <!-- Cart Footer -->
+        <div class="p-6 border-t border-cream-200 bg-cream-50 space-y-4">
+            <div class="space-y-2 text-sm">
+                <div class="flex justify-between text-espresso-800/70">
+                    <span>Subtotal</span>
+                    <span id="cartSubtotal" class="font-bold text-espresso-950">Rp 0</span>
+                </div>
+                <div class="flex justify-between text-espresso-800/70">
+                    <span>Pajak & Layanan (10%)</span>
+                    <span id="cartTax" class="font-bold text-espresso-950">Rp 0</span>
+                </div>
+                <div class="flex justify-between font-extrabold text-lg text-espresso-950 pt-3 border-t border-cream-200">
+                    <span>Total Pembayaran</span>
+                    <span id="cartTotal" class="text-terracotta-600">Rp 0</span>
+                </div>
+            </div>
+
+            <button id="checkoutBtn" onclick="handleCheckout()" class="w-full py-4 bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold rounded-2xl shadow-lg transition-all flex items-center justify-center gap-2 text-base">
+                <span>Proses Pesanan Now</span>
+                <i data-lucide="arrow-right" class="w-5 h-5"></i>
+            </button>
+        </div>
+    </div>
+
+    <!-- TOAST NOTIFICATION -->
+    <div id="toast" class="fixed bottom-6 right-6 bg-espresso-950 text-white px-5 py-3.5 rounded-2xl shadow-2xl z-50 flex items-center gap-3 border border-espresso-800 transform translate-y-20 opacity-0 transition-all duration-300">
+        <div class="p-1.5 rounded-full bg-terracotta-500 text-white">
+            <i data-lucide="check" class="w-4 h-4"></i>
+        </div>
+        <span id="toastMessage" class="text-sm font-semibold">Pesanan berhasil ditambahkan</span>
+    </div>
+
+    <!-- JAVASCRIPT & ENHANCED 3D TILT LOGIC -->
+    <script>
+        const products = [
+            {
+                id: 1,
+                name: "Supreme Wagyu Burger",
+                category: "main",
+                price: 145000,
+                rating: 4.9,
+                badge: "Terlaris",
+                badgeColor: "bg-terracotta-500 text-white",
+                description: "Daging Wagyu A5 Australia, keju cheddar leleh, saus truffle eksklusif & roti brioche hangat.",
+                image: "https://images.unsplash.com/photo-1568901346375-23c9450c58cd?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1550547660-d9450f859349?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 2,
+                name: "Creamy Truffle Fettuccine",
+                category: "main",
+                price: 125000,
+                rating: 4.8,
+                badge: "Rekomendasi Chef",
+                badgeColor: "bg-espresso-950 text-white",
+                description: "Pasta segar buatan tangan dengan saus krim jamur truffle hitam Italia & keju Parmigiano.",
+                image: "https://images.unsplash.com/photo-1621996346565-e3d5d6281318?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1551183053-bf91a1d81141?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 3,
+                name: "Artisan Margherita Pizza",
+                category: "main",
+                price: 110000,
+                rating: 4.7,
+                badge: "Favorit",
+                badgeColor: "bg-sage-500 text-white",
+                description: "Adonan khas Neapolitan dipanggang tradisional dengan saus tomat San Marzano & Mozzarella segar.",
+                image: "https://images.unsplash.com/photo-1513104890138-7c749659a591?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1604382354936-07c5d9983bd3?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 4,
+                name: "Matchamisu Gourmet Dessert",
+                category: "dessert",
+                price: 65000,
+                rating: 4.9,
+                badge: "Manis",
+                badgeColor: "bg-gold-600 text-white",
+                description: "Perpaduan klasik Tiramisu Italia dengan taburan Matcha ceremonial kelas satu asal Uji, Jepang.",
+                image: "https://images.unsplash.com/photo-1571877227200-a0d98ea607e9?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1587314168485-3236d6710814?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 5,
+                name: "Signature Berry Smoothie",
+                category: "beverage",
+                price: 48000,
+                rating: 4.8,
+                badge: "Segar",
+                badgeColor: "bg-terracotta-600 text-white",
+                description: "Ekstrak racikan buah berry murni, yogurt organik dingin, serta tetesan madu hutan pilihan.",
+                image: "https://images.unsplash.com/photo-1553530666-ba11a7da3888?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1505252585461-04db1eb84625?auto=format&fit=crop&w=800&q=80"
+            },
+            {
+                id: 6,
+                name: "Gourmet Ribeye Steak",
+                category: "main",
+                price: 260000,
+                rating: 5.0,
+                badge: "Eksklusif",
+                badgeColor: "bg-terracotta-700 text-white",
+                description: "Daging Ribeye impor pilihan 250g dipanggang sempurna disajikan dengan mentega herbal & potato puree.",
+                image: "https://images.unsplash.com/photo-1558030006-450675393462?auto=format&fit=crop&w=800&q=80",
+                fallbackImage: "https://images.unsplash.com/photo-1544025162-d76694265947?auto=format&fit=crop&w=800&q=80"
+            }
+        ];
+
+        let cart = [];
+
+        function formatRupiah(number) {
+            return new Intl.NumberFormat('id-ID', { style: 'currency', currency: 'IDR', maximumFractionDigits: 0 }).format(number);
+        }
+
+        // Render Product Cards & Attach 3D Mouse Movement
+        function renderProducts(filterCategory = 'all') {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = '';
+
+            const filteredProducts = filterCategory === 'all' 
+                ? products 
+                : products.filter(p => p.category === filterCategory);
+
+            filteredProducts.forEach(product => {
+                const card = document.createElement('div');
+                card.className = "product-card-3d relative bg-white rounded-3xl p-5 shadow-md hover:shadow-2xl border border-cream-200 transition-all duration-300 cursor-pointer flex flex-col justify-between overflow-hidden group";
+                
+                card.innerHTML = `
+                    <div class="glare-effect"></div>
+
+                    <div>
+                        <!-- Image Container Layer -->
+                        <div class="relative w-full h-56 rounded-2xl overflow-hidden mb-5 card-img-layer bg-cream-100">
+                            <img src="${product.image}" 
+                                 onerror="this.onerror=null;this.src='${product.fallbackImage}';" 
+                                 alt="${product.name}" 
+                                 class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110">
+                            
+                            <!-- Badge Layer -->
+                            <span class="absolute top-3 left-3 card-badge-layer text-xs font-bold px-3 py-1.5 rounded-xl shadow-md ${product.badgeColor}">
+                                ${product.badge}
+                            </span>
+
+                            <!-- Rating Tag Layer -->
+                            <div class="absolute bottom-3 right-3 card-badge-layer bg-white/95 backdrop-blur-md text-espresso-950 text-xs font-bold px-3 py-1.5 rounded-xl flex items-center gap-1 shadow-md border border-cream-200">
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                                <span>${product.rating}</span>
+                            </div>
+                        </div>
+
+                        <!-- Info Content Layer -->
+                        <div class="card-content-layer space-y-2">
+                            <h3 class="font-serif text-xl font-bold text-espresso-950 group-hover:text-terracotta-600 transition-colors">${product.name}</h3>
+                            <p class="text-espresso-800/70 text-xs leading-relaxed line-clamp-2 font-medium">${product.description}</p>
+                        </div>
+                    </div>
+
+                    <!-- Action & Price Layer -->
+                    <div class="card-content-layer pt-5 mt-4 border-t border-cream-100 flex items-center justify-between">
+                        <div>
+                            <span class="text-[10px] uppercase font-bold text-espresso-800/50 block">Harga</span>
+                            <span class="font-extrabold text-xl text-espresso-950">${formatRupiah(product.price)}</span>
+                        </div>
+                        <button onclick="addToCart(${product.id})" class="px-4 py-2.5 bg-terracotta-500 hover:bg-terracotta-600 text-white font-bold rounded-xl transition-all duration-300 shadow-md transform hover:scale-105 active:scale-95 flex items-center gap-1.5 text-xs">
+                            <i data-lucide="plus" class="w-4 h-4"></i>
+                            <span>Tambah</span>
+                        </button>
+                    </div>
+                `;
+
+                grid.appendChild(card);
+                attach3DTiltEffect(card);
+            });
+
+            lucide.createIcons();
+        }
+
+        // Mouse Move 3D Tilt Dynamic Calculation
+        function attach3DTiltEffect(cardElement) {
+            cardElement.addEventListener('mousemove', (e) => {
+                const rect = cardElement.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+
+                const rotateX = ((y - centerY) / centerY) * -14;
+                const rotateY = ((x - centerX) / centerX) * 14;
+
+                cardElement.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+
+                const glare = cardElement.querySelector('.glare-effect');
+                if (glare) {
+                    const angle = Math.atan2(y - centerY, x - centerX) * (180 / Math.PI);
+                    glare.style.background = `linear-gradient(${angle + 90}deg, rgba(255,255,255,0.4) 0%, rgba(255,255,255,0) 80%)`;
+                }
+            });
+
+            cardElement.addEventListener('mouseleave', () => {
+                cardElement.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        }
+
+        function addToCart(productId) {
+            const product = products.find(p => p.id === productId);
+            const existingItem = cart.find(item => item.id === productId);
+
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+
+            updateCartUI();
+            showToast(`${product.name} dimasukkan ke keranjang!`);
+        }
+
+        function changeQuantity(productId, delta) {
+            const item = cart.find(i => i.id === productId);
+            if (!item) return;
+
+            item.quantity += delta;
+            if (item.quantity <= 0) {
+                cart = cart.filter(i => i.id !== productId);
+            }
+
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const badge = document.getElementById('cartCountBadge');
+            
+            const totalCount = cart.reduce((sum, item) => sum + item.quantity, 0);
+            
+            if (totalCount > 0) {
+                badge.innerText = totalCount;
+                badge.classList.remove('hidden');
+            } else {
+                badge.classList.add('hidden');
+            }
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="h-full flex flex-col items-center justify-center text-center text-espresso-800/50 py-12">
+                        <i data-lucide="shopping-bag" class="w-16 h-16 stroke-1 mb-3 text-cream-300"></i>
+                        <p class="font-bold text-espresso-950">Keranjang Masih Kosong</p>
+                        <p class="text-xs text-espresso-800/60 mt-1">Pilih hidangan pilihan Anda di atas.</p>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = cart.map(item => `
+                    <div class="flex items-center gap-4 bg-cream-100/70 p-3.5 rounded-2xl border border-cream-200">
+                        <img src="${item.image}" alt="${item.name}" class="w-16 h-16 rounded-xl object-cover">
+                        <div class="flex-1">
+                            <h4 class="font-bold text-sm text-espresso-950">${item.name}</h4>
+                            <span class="text-xs text-terracotta-600 font-extrabold">${formatRupiah(item.price)}</span>
+                            <div class="flex items-center gap-2 mt-2">
+                                <button onclick="changeQuantity(${item.id}, -1)" class="w-6 h-6 rounded-lg bg-cream-200 hover:bg-cream-300 text-espresso-950 flex items-center justify-center font-bold text-xs">-</button>
+                                <span class="text-xs font-bold text-espresso-950 px-1">${item.quantity}</span>
+                                <button onclick="changeQuantity(${item.id}, 1)" class="w-6 h-6 rounded-lg bg-cream-200 hover:bg-cream-300 text-espresso-950 flex items-center justify-center font-bold text-xs">+</button>
+                            </div>
+                        </div>
+                        <div class="text-right">
+                            <span class="font-extrabold text-sm text-espresso-950">${formatRupiah(item.price * item.quantity)}</span>
+                        </div>
+                    </div>
+                `).join('');
+            }
+
+            const subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const tax = subtotal * 0.1;
+            const total = subtotal + tax;
+
+            document.getElementById('cartSubtotal').innerText = formatRupiah(subtotal);
+            document.getElementById('cartTax').innerText = formatRupiah(tax);
+            document.getElementById('cartTotal').innerText = formatRupiah(total);
+
+            lucide.createIcons();
+        }
+
+        function showToast(message) {
+            const toast = document.getElementById('toast');
+            const toastMsg = document.getElementById('toastMessage');
+
+            toastMsg.innerText = message;
+            toast.classList.remove('translate-y-20', 'opacity-0');
+            toast.classList.add('translate-y-0', 'opacity-100');
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-0', 'opacity-100');
+                toast.classList.add('translate-y-20', 'opacity-0');
+            }, 3000);
+        }
+
+        function handleCheckout() {
+            if (cart.length === 0) {
+                showToast("Keranjang Anda kosong!");
+                return;
+            }
+            alert("Terima kasih atas pesanan Anda! Pesanan Savoria Gourmet Anda sedang disiapkan.");
+            cart = [];
+            updateCartUI();
+            toggleCart(false);
+        }
+
+        function toggleCart(open) {
+            const sidebar = document.getElementById('cartSidebar');
+            const overlay = document.getElementById('cartOverlay');
+
+            if (open) {
+                overlay.classList.remove('opacity-0', 'pointer-events-none');
+                overlay.classList.add('opacity-100');
+                sidebar.classList.remove('translate-x-full');
+            } else {
+                overlay.classList.remove('opacity-100');
+                overlay.classList.add('opacity-0', 'pointer-events-none');
+                sidebar.classList.add('translate-x-full');
+            }
+        }
+
+        window.addEventListener('DOMContentLoaded', () => {
+            renderProducts('all');
+            updateCartUI();
+
+            const mobileBtn = document.getElementById('mobileMenuBtn');
+            const mobileMenu = document.getElementById('mobileMenu');
+            mobileBtn.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+
+            document.getElementById('openCartBtn').addEventListener('click', () => toggleCart(true));
+            document.getElementById('closeCartBtn').addEventListener('click', () => toggleCart(false));
+            document.getElementById('cartOverlay').addEventListener('click', () => toggleCart(false));
+
+            const filterButtons = document.querySelectorAll('#categoryFilters .filter-btn');
+            filterButtons.forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    filterButtons.forEach(b => {
+                        b.classList.remove('bg-espresso-950', 'text-white', 'shadow-md');
+                        b.classList.add('bg-cream-100', 'text-espresso-800', 'border', 'border-cream-200');
+                    });
+                    e.target.classList.remove('bg-cream-100', 'text-espresso-800', 'border', 'border-cream-200');
+                    e.target.classList.add('bg-espresso-950', 'text-white', 'shadow-md');
+
+                    const category = e.target.getAttribute('data-category');
+                    renderProducts(category);
+                });
+            });
+        });
+    </script>
+</body>
+</html>
