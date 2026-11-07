@@ -105,6 +105,8 @@ h2 em{font-style:normal;color:var(--pink)}
 .bx:hover{transform:translateY(-6px);border-color:#4a2c3c}
 .bx h3{font-family:var(--display);font-weight:600;font-size:15px;color:var(--pink-soft);letter-spacing:.02em;margin-bottom:14px}
 .bx p{color:#CFC9D2}
+.bx p.justify{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;column-count:2;column-gap:48px}
+@media (max-width:960px){.bx p.justify{column-count:1}}
 .bx.s7{grid-column:span 7}.bx.s5{grid-column:span 5}.bx.s4{grid-column:span 4}.bx.s12{grid-column:span 12}
 .bx .big{font-family:var(--display);font-weight:800;font-size:clamp(52px,6vw,84px);line-height:1;letter-spacing:-.04em}
 .bx .big small{font-size:.5em;color:var(--pink)}
@@ -117,10 +119,10 @@ h2 em{font-style:normal;color:var(--pink)}
 .skgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:28px}
 
 /* PROYEK */
-.proj{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:20px}
+.proj{display:grid;grid-template-columns:repeat(2,1fr);gap:20px}
 .pc{display:flex;flex-direction:column;gap:18px;padding:16px;border-radius:28px;background:var(--ink);border:1px solid var(--line);transition:transform .35s cubic-bezier(.2,.8,.2,1),border-color .3s}
 .pc:hover{transform:translateY(-8px);border-color:var(--pink)}
-.pv{height:230px;border-radius:18px;position:relative;overflow:hidden;background:#18111A}
+.pv{aspect-ratio:2.15/1;border-radius:18px;position:relative;overflow:hidden;background:#18111A}
 .pc:nth-child(2) .pv{background:var(--ink2)}
 .pc:nth-child(3) .pv{background:#1c1419}
 .pv i{position:absolute;display:block;border-radius:12px;transition:transform .5s cubic-bezier(.2,.8,.2,1)}
@@ -129,6 +131,9 @@ h2 em{font-style:normal;color:var(--pink)}
 .pc .pv.mock{background:radial-gradient(circle at 50% 35%,rgba(240,107,174,.30),transparent 68%),#18111A}
 .pv .shot{position:absolute;left:50%;top:14%;width:34%;max-width:170px;height:auto;transform:translateX(-50%);filter:drop-shadow(0 14px 24px rgba(0,0,0,.5));transition:transform .5s cubic-bezier(.2,.8,.2,1)}
 .pc:hover .pv .shot{transform:translateX(-50%) translateY(-8px)}
+.pc .pv.web{background:radial-gradient(circle at 50% 0%,rgba(240,107,174,.26),transparent 70%),#18111A}
+.pv .scr{position:absolute;left:6%;top:8%;width:88%;height:auto;border-radius:12px 12px 0 0;box-shadow:0 16px 34px rgba(0,0,0,.55),0 0 0 1px rgba(255,255,255,.08);transition:transform .5s cubic-bezier(.2,.8,.2,1)}
+.pc:hover .pv .scr{transform:translateY(-8px)}
 .lb.proto iframe{height:min(84vh,900px)}
 .pc .tx{padding:0 8px 8px}
 .pc .tg{color:var(--pink-soft);font-size:15px}
@@ -206,6 +211,7 @@ footer{padding:36px 0 52px;color:var(--muted);font-size:16px}
   .bx.s4{grid-column:span 6}
   .glow{display:none}
 }
+@media (max-width:720px){.proj{grid-template-columns:1fr}}
 @media (max-width:640px){
   .status{display:none}
   .tb-links .loc,.tb-links .sep{display:none}
@@ -286,11 +292,11 @@ footer{padding:36px 0 52px;color:var(--muted);font-size:16px}
   <div class="wrap">
     <div class="sec-head"><h2>Tentang <em>saya</em></h2><p>Ringkasan singkat latar belakang, pendidikan, dan keahlian saya.</p></div>
     <div class="bento">
-      <div class="bx s7">
+      <div class="bx s12">
         <h3>Profil</h3>
-        <p>Saya lulusan S1 Informatika Universitas Pamulang dengan pengalaman kerja lebih dari lima tahun di bidang pelayanan dan administrasi operasional. Di Supermal Karawaci, saya melayani ribuan pengunjung setiap hari dan menjalankan prosedur keselamatan sesuai standar. Di Kawan Lama Group, saya menyusun laporan kegiatan harian dan insiden untuk manajemen, serta berkoordinasi dengan kontraktor dan tim lapangan. Saya juga pernah magang di Kementerian Agama Kota Tangerang, bertugas menginput data dan memeriksa kelengkapan berkas pendaftaran haji. Latar belakang informatika memberi saya dasar pemrograman, basis data (MySQL), perancangan UI/UX, dan pengembangan web. Saya siap berkontribusi di bidang pelayanan, administrasi, maupun teknologi informasi.</p>
+        <p class="justify" style="text-align:justify;text-justify:inter-word">Saya lulusan S1 Informatika Universitas Pamulang dengan pengalaman kerja lebih dari lima tahun di bidang pelayanan dan administrasi operasional. Di Supermal Karawaci, saya melayani ribuan pengunjung setiap hari dan menjalankan prosedur keselamatan sesuai standar. Di Kawan Lama Group, saya menyusun laporan kegiatan harian dan insiden untuk manajemen, serta berkoordinasi dengan kontraktor dan tim lapangan. Saya juga pernah magang di Kementerian Agama Kota Tangerang, bertugas menginput data dan memeriksa kelengkapan berkas pendaftaran haji. Latar belakang informatika memberi saya dasar pemrograman, basis data (MySQL), perancangan UI/UX, dan pengembangan web. Saya siap berkontribusi di bidang pelayanan, administrasi, maupun teknologi informasi.</p>
       </div>
-      <div class="bx s5 edu">
+      <div class="bx s12 edu">
         <h3>Pendidikan</h3>
         <strong>S1 Teknik Informatika (S.Kom)</strong>
         <div class="meta">Universitas Pamulang · 2026 · IPK 3,49 / 4,00</div>
@@ -313,7 +319,7 @@ footer{padding:36px 0 52px;color:var(--muted);font-size:16px}
 <!-- ============ PROYEK ============ -->
 <section id="proyek" style="padding-top:0">
   <div class="wrap">
-    <div class="sec-head"><h2>Proyek <em>pilihan</em></h2><p>Prototype UI/UX yang saya rancang untuk proyek BengKu. Klik kartu untuk mencobanya langsung.</p></div>
+    <div class="sec-head"><h2>Proyek <em>pilihan</em></h2><p>Prototype aplikasi, web app, dan landing page yang saya rancang. Klik kartu untuk mencobanya langsung.</p></div>
     <div class="proj">
       <a href="bengku-prototype-klik.html" class="pc" data-proto data-title="BengKu: prototype klik aplikasi customer">
         <div class="pv mock" role="img" aria-label="Pratinjau layar Home aplikasi BengKu">
@@ -321,13 +327,25 @@ footer{padding:36px 0 52px;color:var(--muted);font-size:16px}
         </div>
         <div class="tx"><div class="tg">Prototype UI/UX &middot; Aplikasi mobile</div><h3>BengKu (Customer)</h3><p>Aplikasi pemesanan mekanik darurat, towing, sparepart, dan booking bengkel. Saya merancang alur dari pesan sampai bayar dan rating. Klik untuk mencoba.</p></div>
       </a>
-      <a href="BengKu-Mitra-prototype-klik.html" class="pc" data-proto data-title="BengKu Mitra: prototype klik aplikasi mitra mekanik">
+      <a href="BengKu Mitra_ prototype klik.html" class="pc" data-proto data-title="BengKu Mitra: prototype klik aplikasi mitra mekanik">
         <div class="pv mock" role="img" aria-label="Pratinjau layar beranda aplikasi BengKu Mitra">
           <img class="shot" src="thumb-mitra.png" alt="" loading="lazy">
         </div>
         <div class="tx"><div class="tg">Prototype UI/UX &middot; Aplikasi mobile</div><h3>BengKu Mitra</h3><p>Sisi mitra mekanik: terima order, atur layanan dan harga, kelola sparepart, serta pantau pendapatan. Klik untuk mencoba.</p></div>
       </a>
-    </div>
+      <a href="Web-marketing.html" class="pc" data-proto data-title="Pasar: web aplikasi marketing">
+        <div class="pv web" role="img" aria-label="Pratinjau dashboard pimpinan pada web Pasar">
+          <img class="scr" src="web.png" alt="" loading="lazy">
+        </div>
+        <div class="tx"><div class="tg">Web app &middot; Marketing</div><h3>Web Aplikasi Marketing</h3><p>Dua peran yang saling terhubung. Pimpinan memantau omzet vs target, corong penjualan, dan capaian tiap karyawan. Karyawan mengelola lead, tugas, penawaran, pelanggan, kampanye, konten, dan laporan, lengkap dengan notifikasi dan komisi 2%. Klik untuk mencoba.</p></div>
+      </a>
+      <a href="landing-Page.html" class="pc" data-proto data-title="Amirz Gourmet: landing page restoran">
+        <div class="pv web" role="img" aria-label="Pratinjau bagian atas landing page Amirz Gourmet">
+          <img class="scr" src="landing.png" alt="" loading="lazy">
+        </div>
+        <div class="tx"><div class="tg">Landing page &middot; Kuliner</div><h3>Landing Page Restaurant</h3><p>menu favorit yang bisa difilter per kategori, penawaran spesial diskon 30% untuk pesanan pertama, dan ulasan pelanggan. Keranjang dan checkout-nya interaktif. Klik untuk mencoba.</p></div>
+      </a>
+      </div>
   </div>
 </section>
 
