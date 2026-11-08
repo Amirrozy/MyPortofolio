@@ -105,7 +105,8 @@ h2 em{font-style:normal;color:var(--pink)}
 .bx:hover{transform:translateY(-6px);border-color:#4a2c3c}
 .bx h3{font-family:var(--display);font-weight:600;font-size:15px;color:var(--pink-soft);letter-spacing:.02em;margin-bottom:14px}
 .bx p{color:#CFC9D2}
-.bx p.justify{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto}
+.bx p.justify{text-align:justify;text-justify:inter-word;hyphens:auto;-webkit-hyphens:auto;column-count:1;column-gap:48px}
+@media (max-width:960px){.bx p.justify{column-count:1}}
 .bx.s7{grid-column:span 7}.bx.s5{grid-column:span 5}.bx.s4{grid-column:span 4}.bx.s12{grid-column:span 12}
 .bx .big{font-family:var(--display);font-weight:800;font-size:clamp(52px,6vw,84px);line-height:1;letter-spacing:-.04em}
 .bx .big small{font-size:.5em;color:var(--pink)}
